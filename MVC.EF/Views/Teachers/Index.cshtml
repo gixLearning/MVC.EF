@@ -1,0 +1,93 @@
+﻿@model MVC.EF.Models.TeacherCourseViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr class="d-flex">
+                <th class="col-1"><span>First Name:</span></th>
+                <th class="col-2"><span>Last Name:</span></th>
+                <th class="col-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+@foreach (var item in Model.Teachers) {
+    string selectedRow = ""; 
+    if (item.TeacherID == ViewBag.TeacherId) 
+    { 
+        selectedRow = "table-success"; 
+    } 
+
+    <tr class="d-flex" valign="top">
+        <td class="col-1 @selectedRow">
+            @Html.DisplayFor(modelItem => item.Firstname)
+        </td>
+        <td class="col-2 @selectedRow">
+            @Html.DisplayFor(modelItem => item.Lastname)
+        </td>
+        <td class="col-2 @selectedRow">
+            @Html.ActionLink("Select", "Index", new { id = item.TeacherID }) |
+            @Html.ActionLink("Edit", "Edit", new { id=item.TeacherID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TeacherID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TeacherID })
+        </td>
+    </tr>
+}
+        </tbody>
+    </table>
+</div>
+@if(Model.Courses != null && Model.Courses.Count > 0) {
+    <h3>Responsible for following courses:</h3>
+<div class="row">    
+    <table class="table">
+        <thead>
+            <tr class="d-flex">
+                <th class="col-1"></th>
+                <th class="col-1">Course:</th>
+                <th class="col-2">Title:</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Courses) {
+            string selectedRow = "";
+            if (item.CourseID == ViewBag.CourseID)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="d-flex" valign="top">
+                <td class="col-1 @selectedRow">@Html.ActionLink("Select", "Index", new { courseID = item.CourseID })</td>
+                <td class="col-1 @selectedRow">@item.CourseID</td>
+                <td class="col-2 @selectedRow">@item.CourseName</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>  
+}
+@if(Model.EnrolledStudents != null && Model.EnrolledStudents.Count > 0) {
+    <h3>Enrolled students:</h3>
+<div class="row">    
+    <table class="table">
+        <thead>
+            <tr class="d-flex">
+                <th class="col-2">Name</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.EnrolledStudents) {
+            <tr class="d-flex" valign="top">
+                <td class="col-2">@item.FullName</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>  
+}

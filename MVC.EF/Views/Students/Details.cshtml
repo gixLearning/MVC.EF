@@ -1,0 +1,49 @@
+﻿@model MVC.EF.Models.Student
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+<hr />
+<dl class="row">
+    <dt class="col-md-1">
+        @Html.DisplayNameFor(model => model.FirstName)
+    </dt>
+    <dd class="col-md-11">
+        @Html.DisplayFor(model => model.FirstName)
+    </dd>
+    <dt class="col-md-1">
+        @Html.DisplayNameFor(model => model.LastName)
+    </dt>
+    <dd class="col-md-11">
+        @Html.DisplayFor(model => model.LastName)
+    </dd>
+    @if (Model.Courses.Count > 0) {
+        <dt class="col-xl-12">Enrolled in the following courses:</dt>        
+        <dd class="col-xl-12">
+            <table class="table">
+                <tr>
+                    <th>Course Title</th>
+                </tr>
+                @foreach (var item in Model.Courses) {
+                    <tr>
+                        <td>@Html.DisplayFor(courseItem => item.CourseName)</td>                        
+                    </tr>
+                }
+            </table>
+        </dd>
+    }
+</dl>
+@*<dl class="row">
+    <dt>
+        Courses:
+    </dt>
+    @foreach (var course in Model.Courses) {
+        @Html.DisplayFor(courseModel => course.CourseName)
+    }
+</dl>*@
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.StudentID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
