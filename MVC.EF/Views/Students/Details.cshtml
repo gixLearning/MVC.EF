@@ -20,8 +20,8 @@
         @Html.DisplayFor(model => model.LastName)
     </dd>
     @if (Model.Courses.Count > 0) {
-        <dt class="col-xl-12">Enrolled in the following courses:</dt>        
-        <dd class="col-xl-12">
+        <dt class="d-flex">Enrolled in the following courses:</dt>        
+        <dd class="col-12">
             <table class="table">
                 <tr>
                     <th>Course Title</th>
@@ -31,6 +31,25 @@
                         <td>@Html.DisplayFor(courseItem => item.CourseName)</td>                        
                     </tr>
                 }
+            </table>
+        </dd>
+        <dt class="d-flex">Current assignments:</dt>
+        <dd class="col-12">
+            <table class="table">
+                <thead>
+                    <tr class="d-flex">
+                        <th class="col-1">Title:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Courses) {
+                        foreach (var assignment in item.Assignments) {
+                            <tr class="d-flex" valign="top">
+                                <td class="col-1">@assignment.AssignmentName</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
             </table>
         </dd>
     }

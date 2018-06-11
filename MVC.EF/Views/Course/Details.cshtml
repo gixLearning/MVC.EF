@@ -35,8 +35,28 @@
         </table>
     </div>  
 }
+@if(Model.EnrolledStudents != null && Model.EnrolledStudents.Count > 0) {
+    <h3>Enrolled students:</h3>
+<div class="row">    
+    <table class="table">
+        <thead>
+            <tr class="d-flex">
+                <th class="col-2">Name</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.EnrolledStudents) {
+            <tr class="d-flex" valign="top">
+                <td class="col-2">@item.FullName</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>  
+}
+
 <div class="d-flex">
-    @Html.ActionLink("Add new assignment", "AddAssignment", new { id = Model.CourseID })
+    @Html.ActionLink("Add new assignment", "AddAssignment", new { id = Model.CourseID }) |
     @Html.ActionLink("Add student to course", "AddStudent", new { id = Model.CourseID })
 </div>
 <p>

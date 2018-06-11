@@ -8,7 +8,7 @@
 
 
 
-@using (Html.BeginForm("AddStudent", "Course", new { id = Model.CourseID })) {
+@using (Html.BeginForm("AddStudent", "Course", new { CourseID = Model.CourseID })) {
         @Html.AntiForgeryToken()   
         <hr />
         <h4>Add student assignemnt to course @*@Html.DisplayFor(model => model.Course.CourseID) : @Html.DisplayFor(model => model.Course.CourseName)*@</h4>    

@@ -116,8 +116,46 @@ namespace MVC.EF.Controllers
 
         public ActionResult AddStudent(int? id) {
 
-            return View();
+            if(id != null) {
+                var model = new CourseStudentViewModel {
+                    CourseID = (int)id
+                };
+                return View(model);
+            }
+
+            return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public ActionResult AddStudent(CourseStudentViewModel model) {
+
+            Student student = db.Students.Find(model.StudentID);
+
+            if(student == null) {
+                ModelState.AddModelError("", "No student with that id was found or could not be retrived at this moment.");
+            }
+            Course course = db.Courses.Find(model.CourseID);
+            if (course == null) {
+                return HttpNotFound();
+            }
+
+
+            if (ModelState.IsValid) {
+
+                if (!course.EnrolledStudents.Any(s => s.StudentID == model.StudentID)) {
+                    course.EnrolledStudents.Add(student);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", new { id = model.CourseID });
+                } else {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "A student with that id is already assigned to the course.");
+                }
+                
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.NotFound, "A student with that id was not found.");
+        }
+
+
         // GET: Course/Edit/5
         public ActionResult Edit(int? id)
         {
