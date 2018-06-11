@@ -5,28 +5,39 @@
 }
 
 <h2>Details</h2>
-
-<div>
+<div class="d-flex">
     <h4>Course</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CourseName)
-        </dt>
+    <hr />    
+</div>
+<dl class="row">
+    <dt class="col-1">@Html.DisplayNameFor(model => model.CourseName)</dt>
+    <dd class="col-11">@Html.DisplayFor(model => model.CourseName)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.CourseName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TeacherID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TeacherID)
-        </dd>
-
-    </dl>
+    <dt class="col-1">@Html.DisplayNameFor(model => model.TeacherID)</dt>
+    <dd class="col-11">@Html.DisplayFor(model => model.TeacherID)</dd>
+</dl>
+@if (Model.Assignments.Count > 0) {
+    <h3>This course has the following assignments:</h3>
+    <div class="row">    
+        <table class="table">
+            <thead>
+                <tr class="d-flex">
+                    <th class="col-1">Title:</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Assignments) {
+                <tr class="d-flex" valign="top">
+                    <td class="col-1">@item.AssignmentName</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>  
+}
+<div class="d-flex">
+    @Html.ActionLink("Add new assignment", "AddAssignment", new { id = Model.CourseID })
+    @Html.ActionLink("Add student to course", "AddStudent", new { id = Model.CourseID })
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.CourseID }) |

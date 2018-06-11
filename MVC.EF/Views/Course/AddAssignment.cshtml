@@ -1,0 +1,40 @@
+﻿@model MVC.EF.Models.Assignment
+
+@{
+    ViewBag.Title = "AddAssignment";
+}
+
+<h2>AddAssignment</h2>
+
+<div class="d-flex">
+    @using (Html.BeginForm("AddAssignment", "Course", new { CourseID = Model.CourseID })) {
+        @Html.AntiForgeryToken()   
+        <hr />
+        <h4>Add new assignemnt to course @Html.DisplayFor(model => model.Course.CourseID) : @Html.DisplayFor(model => model.Course.CourseName)</h4>    
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.AssignmentName)
+            @Html.EditorFor(model => model.AssignmentName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.AssignmentName, "", new { @class = "text-danger" })            
+        </div>
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.Course.CourseName)
+            @Html.EditorFor(model => model.Course.CourseName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Course.CourseName, "", new { @class = "text-danger" })*@            
+        </div>
+        <div class="form-group">
+             
+        </div>
+        <input type="submit" value="Save" class="btn btn-primary" />    
+    }
+</div>
+
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

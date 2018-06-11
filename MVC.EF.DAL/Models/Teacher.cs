@@ -7,5 +7,11 @@ namespace MVC.EF.Models {
         public string Lastname { get; set; }
         public int TeacherID { get; set; }
         public virtual IList<Course> Courses { get; set; }
+
+        public string FullName {
+            get {
+                return Firstname + " " + Lastname;
+            }
+        }
     }
 }

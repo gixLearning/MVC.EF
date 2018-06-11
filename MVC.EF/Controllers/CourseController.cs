@@ -36,32 +36,88 @@ namespace MVC.EF.Controllers
             {
                 return HttpNotFound();
             }
+
+            //course.Assignments = db.Assignments
+            //    .Where(a => a.CourseID == course.CourseID)
+            //    .ToList();
+
             return View(course);
         }
 
         // GET: Course/Create
         public ActionResult Create()
         {
-            return View();
+            var model = new CreateCourseViewModel {
+                Teachers = db.Teachers.Select(t => new SelectListItem {
+                    Text = t.Firstname + " " + t.Lastname,
+                    Value = t.TeacherID.ToString()
+                }).ToList()
+            };
+            return View(model);
         }
 
-        // POST: Course/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+
+        [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CourseID,CourseName,TeacherID")] Course course)
+        public ActionResult CreateCourse(CreateCourseViewModel model) 
         {
+            Course course;
             if (ModelState.IsValid)
             {
+                course = db.Courses.Find(model.Course.CourseID);
+                if(course != null) {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "A course with that id already exists.");
+                }
+
+                course = model.Course;
+                course.TeacherID = model.TeacherId;
+                
                 db.Courses.Add(course);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            return View(course);
+            return RedirectToAction("Index");
+            //return View(course);
         }
 
+        public ActionResult AddAssignment(int? id) {
+
+            if (id == null) {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Course course = db.Courses.Find(id);
+            if (course == null) {
+                return HttpNotFound();
+            }
+
+            Assignment assignment = new Assignment {
+                CourseID = course.CourseID,
+                Course = course
+            };
+
+
+            return View(assignment);
+        }
+
+        [HttpPost, ActionName("AddAssignment")]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddAssignment([Bind(Include = "AssignmentName,CourseID")]Assignment assignment) {
+
+            if (ModelState.IsValid) {
+                db.Assignments.Add(assignment);
+                db.SaveChanges();
+
+                return RedirectToAction("Details", new { id = assignment.CourseID });
+            }
+
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+
+        public ActionResult AddStudent(int? id) {
+
+            return View();
+        }
         // GET: Course/Edit/5
         public ActionResult Edit(int? id)
         {
